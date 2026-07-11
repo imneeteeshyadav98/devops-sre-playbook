@@ -1,51 +1,97 @@
 # DevOps SRE Playbook
 
-This repository is my public learning and preparation space for becoming a stronger Senior SRE / Platform Engineer.
+<p align="center">
+  <b>My public learning and engineering notes for becoming a stronger Senior SRE / Platform Engineer.</b>
+</p>
 
-My focus areas:
+<p align="center">
+  <img src="https://img.shields.io/badge/Focus-Kubernetes%20Upgrade%20Readiness-blue" />
+  <img src="https://img.shields.io/badge/AWS-EKS-orange" />
+  <img src="https://img.shields.io/badge/SRE-Production%20Reliability-green" />
+  <img src="https://img.shields.io/badge/Platform%20Engineering-DevOps-purple" />
+</p>
 
-- Kubernetes upgrade readiness
-- AWS EKS upgrade planning
-- Kubernetes API deprecations
-- Admission webhooks
-- PodDisruptionBudgets and node drain risks
-- EKS add-ons and lifecycle management
-- Production reliability and observability
-- DevOps/SRE interview preparation
-- Kubepreflight and AWS EOL Monitor product ideas
+---
 
 ## Current Goal
 
-Build strong hands-on expertise around Kubernetes/EKS upgrade automation and production reliability.
+Become a stronger **Senior SRE / Platform Engineer** with deep hands-on expertise in:
+
+- Kubernetes/EKS upgrade readiness
+- API deprecation and removed API detection
+- Admission webhook and PDB upgrade blockers
+- EKS add-ons and lifecycle management
+- Production reliability and observability
+- Terraform, CI/CD, automation, and platform tooling
 
 I am actively working on:
 
-- Kubepreflight: Kubernetes upgrade preflight and readiness tool
-- AWS EOL Monitor: AWS service lifecycle and upgrade risk tracking
-- SRE/Platform engineering preparation
+| Project | Purpose |
+|---|---|
+| **Kubepreflight** | Kubernetes upgrade preflight and readiness tool |
+| **AWS EOL Monitor** | AWS service lifecycle and upgrade-risk tracking |
+| **DevOps/SRE Playbook** | Public notes, incident reviews, interview prep, and production checklists |
 
-## Why this repo exists
+---
 
-Kubernetes upgrades can fail because of hidden production risks like:
+## Why This Repo Exists
 
-- Removed APIs
-- Deprecated APIs
-- Admission webhook failures
-- PodDisruptionBudget drain blockers
-- Unhealthy workloads
-- Node version skew
-- Add-on compatibility issues
-- Weak backup and rollback readiness
+Kubernetes upgrades can fail because of hidden production risks:
 
-This repo captures my daily learning, incident analysis, notes, checklists, and product ideas around these problems.
+| Risk | Production Impact |
+|---|---|
+| Removed APIs | Deployments, Helm, GitOps, or Terraform apply can fail |
+| Deprecated APIs | Future upgrade risk |
+| Admission webhooks | API writes can get blocked |
+| PodDisruptionBudgets | Node drain and upgrade can get stuck |
+| Unhealthy workloads | Upgrade starts from an already unstable state |
+| Node version skew | Worker nodes may become incompatible |
+| EKS add-on mismatch | DNS, CNI, proxy, storage, or autoscaling can break |
+| Weak rollback plan | Recovery becomes slow during outage |
 
-## Topics
+This repo captures my daily learning and product thinking around these problems.
 
-- Kubernetes
-- AWS EKS
-- SRE
-- Platform Engineering
-- Terraform
-- CI/CD
-- Observability
-- Production incident learning
+---
+
+## Topics Covered
+
+| Area | Notes |
+|---|---|
+| Kubernetes | Upgrade basics, API deprecations, webhooks, PDBs, version skew |
+| AWS EKS | Upgrade planning, add-ons, lifecycle, node groups |
+| SRE | Incident learning, reliability, observability, post-upgrade validation |
+| Kubepreflight | Product ideas, rules backlog, readiness score, action plan |
+| EOL Monitor | AWS lifecycle monitoring and service upgrade risk |
+| Interview Prep | Practical answers for DevOps/SRE/Platform roles |
+| Job Search | Resume keywords, target profile, remote/hybrid DevOps roles |
+
+---
+
+## Repository Structure
+
+```text
+devops-sre-playbook/
+├── kubernetes/
+│   ├── upgrade-basics.md
+│   ├── api-deprecation-lifecycle.md
+│   ├── admission-webhooks.md
+│   ├── pdb-and-node-drain.md
+│   └── version-skew.md
+├── eks/
+│   ├── eks-upgrade-checklist.md
+│   ├── eks-addons.md
+│   └── eks-lifecycle.md
+├── incidents/
+│   └── reddit-piday-outage.md
+├── kubepreflight/
+│   ├── product-ideas.md
+│   ├── rules-backlog.md
+│   ├── readiness-score.md
+│   └── action-plan.md
+├── eol-monitor/
+│   ├── aws-eol-monitoring.md
+│   └── service-lifecycle-checklist.md
+├── interview-prep/
+│   ├── kubernetes-upgrade-answers.md
+│   ├── sre-answers.md
+    └── aws-devops-answers.md
