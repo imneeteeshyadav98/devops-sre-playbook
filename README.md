@@ -1,4 +1,4 @@
-# 🚀 DevOps SRE Playbook
+# DevOps SRE Playbook
 
 <p align="center">
   <b>Public DevOps/SRE notes, Kubernetes upgrade learnings, incident reviews, Kubepreflight ideas, and Platform Engineering interview prep.</b>
@@ -15,7 +15,7 @@
 
 ---
 
-## 🎯 Current Goal
+## Current Goal
 
 Become a stronger **Senior SRE / Platform Engineer** with deep hands-on expertise in:
 
@@ -28,7 +28,7 @@ Become a stronger **Senior SRE / Platform Engineer** with deep hands-on expertis
 
 ---
 
-## 🧑‍💻 What I Am Building
+## What I Am Building
 
 | Project | Purpose | Focus |
 |---|---|---|
@@ -38,7 +38,7 @@ Become a stronger **Senior SRE / Platform Engineer** with deep hands-on expertis
 
 ---
 
-## 🧭 Why This Repo Exists
+## Why This Repo Exists
 
 Kubernetes upgrades can fail because of hidden production risks.
 
@@ -57,7 +57,7 @@ Kubernetes upgrades can fail because of hidden production risks.
 
 ---
 
-## 📚 Topics Covered
+## Topics Covered
 
 | Area | Notes |
 |---|---|
@@ -71,7 +71,7 @@ Kubernetes upgrades can fail because of hidden production risks.
 
 ---
 
-## 🗂 Repository Structure
+## Repository Structure
 
 ```text
 devops-sre-playbook/
@@ -112,7 +112,7 @@ devops-sre-playbook/
 
 ---
 
-## 🛠 Kubepreflight Thinking
+## Kubepreflight Thinking
 
 Kubepreflight should help engineers answer one important question:
 
@@ -132,7 +132,7 @@ Planned and active rule ideas:
 
 ---
 
-## 📊 Upgrade Readiness Model
+## Upgrade Readiness Model
 
 Kubepreflight should not only show findings. It should provide a clear decision summary.
 
@@ -161,7 +161,7 @@ Priority decides what to fix first.
 
 ---
 
-## 🔥 Incident Learnings
+## Incident Learnings
 
 I study real production incidents and convert them into SRE/platform engineering lessons.
 
@@ -179,7 +179,7 @@ Each incident note includes:
 
 ---
 
-## 🎤 Interview Preparation
+## Interview Preparation
 
 This repo helps me prepare practical answers for questions like:
 
@@ -193,7 +193,7 @@ This repo helps me prepare practical answers for questions like:
 
 ---
 
-## ✅ Current Progress
+## Current Progress
 
 | Date | Progress |
 |---|---|
@@ -203,7 +203,7 @@ This repo helps me prepare practical answers for questions like:
 
 ---
 
-## 🧑‍💼 Target Profile
+## Target Profile
 
 I am positioning myself toward:
 
@@ -225,7 +225,7 @@ My core profile:
 
 ---
 
-## 📌 Note
+## Note
 
 This is a living repository.  
 I update it as I learn, build, test, and improve my understanding of real-world DevOps/SRE problems.
