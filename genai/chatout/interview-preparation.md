@@ -47,3 +47,39 @@ A controlled comparison on representative fixtures showing improved multi-turn a
 > "I took real Chatout checkout continuity and handoff failure cases, mapped each to GenAI concepts, built isolated experiments with synthetic fixtures, and used SRE gates—validation, tenant isolation, idempotency, traceability and runtime acceptance—to judge whether a new AI pattern actually improves outcomes."
 
 **Be accurate about evidence:** until a lab is run, say "designed a lab experiment", not "implemented/benchmarked it".
+
+## Whiteboard question — draw the system, then explain authority
+
+```mermaid
+flowchart LR
+  DM["DM"] --> P["Prompt + model"]
+  P --> S["Typed intent proposal"]
+  S --> V["Backend validation"]
+  V --> C{"Routing"}
+  C -->|"Commerce"| A["Fresh trusted API"]
+  C -->|"Knowledge"| R["Tenant-filtered RAG"]
+  C -->|"Human"| H["Handoff"]
+  A --> G["Response approval"]
+  R --> G
+  H --> G
+```
+
+### A strong answer in 60 seconds
+
+“Chatout needs conversational understanding, but also verified commerce outcomes. I let the language model propose structured intent, then a trusted backend validates tenancy, conversation state and authorization. Price and stock come from the commerce API. Merchant FAQs can use tenant-scoped RAG, but retrieved text cannot initiate checkout. Multi-turn context and mixed handoff are explicit regression tests. We prototype new orchestration in an isolated lab and promote only with test and runtime evidence.”
+
+### Interviewer follow-ups to practise
+
+| Prompt | Distinguish in your answer |
+|---|---|
+| Why use Pydantic if the provider supports JSON Schema? | Generation constraint vs runtime/semantic validation |
+| Why isn't Chroma a replacement for Postgres? | Similarity search vs relational/source-of-truth data |
+| What does a retriever return? | Evidence chunks, not final authoritative decisions |
+| When would a graph beat a chain? | Stateful branching/cycles **if** benchmark proves it |
+| Why not send if the model says “checkout complete”? | Model output is not an effect receipt |
+| How do you test tenancy? | W1/W2 adversarial fixtures, strict server-side filtering |
+| How do you measure prompt quality? | Reproducible fixtures, error categories, not anecdotal fluency |
+
+**Interview honesty:** Say “I designed a safe lab experiment” unless you actually built, tested, and deployed it. Keeping this distinction sharp demonstrates better engineering judgment than listing more libraries.
+
+**Study path:** [Visual atlas](../visual-atlas.md) → [Course map](../video-to-project-map.md) → [Regression fixtures](failure-cases.md).

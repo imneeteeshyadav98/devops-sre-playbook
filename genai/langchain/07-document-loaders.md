@@ -31,3 +31,36 @@ Upload two synthetic merchants' distinct policies. Extract text and page referen
 ## Decision
 
 **Optional future merchant knowledge module** in separate GenAI lab. It is not necessary for authoritative Shopify facts and must not be treated as already built.
+
+## Visual — document ingestion begins with provenance
+
+```mermaid
+flowchart TD
+  A["Merchant uploads policy document"] --> B["Validate size, type, tenant, malware"]
+  B --> C["Extract source text and page/section data"]
+  C --> D["Attach server-issued document metadata"]
+  D --> E{"Approved and active?"}
+  E -->|"No"| F["Quarantine / reject; never index"]
+  E -->|"Yes"| G["Pass text and metadata to splitter"]
+  G --> H["Future searchable chunks"]
+```
+
+### A real example
+
+A merchant uploads a return-policy PDF. The loader's job is **not** to decide whether returns are allowed. It extracts *what the document says* and where it came from; the business approval workflow decides whether that source may be used.
+
+| Record | Why it matters |
+|---|---|
+| Workspace ID | Prevent policy leakage across merchants |
+| Document ID + version | Detect stale vectors after policy edits |
+| Page or section | Cite precise evidence |
+| Approval state + effective date | Avoid drafting from unpublished/expired policies |
+| Checksum and upload time | Deduplicate and trace ingest history |
+
+**Architectural boundary:** Document text is **untrusted** even when uploaded by a merchant; no line inside the file can change application authorization.
+
+**Negative case:** Corrupt PDF or a fake document claiming another workspace ID must not be indexed into that workspace. The authenticated upload context wins.
+
+**Checkpoint:** If text extraction succeeds, does that guarantee the content is current policy? **No**. Extraction, review, versioning and approval are separate stages.
+
+**Read next:** [Text splitters](08-text-splitters.md) · [RAG visual](../visual-atlas.md#5-rag-has-two-separate-pipelines).

@@ -38,3 +38,32 @@ Feed fixtures covering: valid JSON, markdown-fenced JSON, trailing commas, wrong
 ## Decision
 
 **Use in lab with Pydantic** after structured outputs; do not treat "parse successful" as "transaction approved".
+
+## Three distinct layers — syntax, meaning, authority
+
+```mermaid
+flowchart LR
+  A["Raw model response"] --> B{"Syntactically parseable?"}
+  B -->|"No"| E["Reject + record parse error"]
+  B -->|"Yes"| C{"Valid intent and values?"}
+  C -->|"No"| F["Reject + record semantic error"]
+  C -->|"Yes"| D{"Authorized and current?"}
+  D -->|"No"| G["Deny / clarify / handoff"]
+  D -->|"Yes"| H["Use verified backend path"]
+```
+
+**Examples:**
+
+| Model output | Parse status | Meaning / authorization |
+|---|---|---|
+| Broken JSON | Fail | Never act |
+| Correct JSON, quantity = -2 | Parse may succeed | Schema/semantic reject |
+| Correct JSON, product from W2 | Parse and schema may succeed | Authorization reject |
+| Correct JSON, handoff flag true | Parse succeeds | Backend must preserve human signal |
+| Correct JSON, invented checkout URL | Could parse | Ignore model URL; backend must supply any link |
+
+**Implementation clue:** Emit separate **redacted counters** for parsing error, schema rejection, authorization denial, commerce lookup failure, and handoff request. Otherwise “99% parsed” can hide a continuity failure.
+
+**Checkpoint:** Can retrying the model fix wrong workspace authorization? **No.** Retry must not become a security bypass.
+
+**Read next:** [Runnables and chains](06-runnables-and-chains.md) · [Trust boundaries](../chatout/architecture-and-safety.md).

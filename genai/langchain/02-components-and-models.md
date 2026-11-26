@@ -39,3 +39,40 @@ Build two minimal adapters: `fake_chat_model(prompt) -> IntentProposal` and `fak
 ## Decision
 
 **Prototype behind interfaces** in the separate learning lab. Avoid installing a framework merely to wrap one static prompt.
+
+## Visual comparison — chat model vs embedding model
+
+```mermaid
+flowchart TB
+  subgraph Chat["Language / intent lane"]
+    A["DM: 'Mujhe 2 chahiye'"] --> B["Chat model"]
+    B --> C["Text or typed intent proposal"]
+  end
+  subgraph Search["Merchant document search lane"]
+    D["Merchant return policy"] --> E["Embedding model"]
+    E --> F["Numerical vectors in an index"]
+    G["Return kab tak?"] --> H["Query embedding"]
+    H --> I["Similarity search with tenant filter"]
+    F --> I
+    I --> J["Matching policy chunks"]
+  end
+  C --> K["Backend policy and response"]
+  J -.->|"Evidence only"| K
+```
+
+### Decision table
+
+| You need... | Reach for... | Do **not** conclude... |
+|---|---|---|
+| Interpret a DM's meaning | Chat model | Its quantity/product is verified |
+| Compare two text meanings | Embeddings | Nearest chunk is authoritative |
+| Generate answer grounded in a merchant policy | Retriever + chat model | A policy grants transactional permission |
+| Create or validate a checkout | Backend + trusted commerce tools | A model can perform it autonomously |
+
+**Engineering intuition:** A single abstraction called “AI” hides the fact that **generation, similarity search and transactions** have different contracts. Isolate them behind replaceable interfaces before adding a framework.
+
+**Negative test:** Swap the embedding adapter to return identical vectors for all documents. Even if retrieval quality collapses, authorization must still prevent cross-workspace results and checkout effects.
+
+**Checkpoint:** Does a vector store update a Shopify stock quantity? **No.** Live commerce data needs an authoritative integration.
+
+**Read next:** [Prompts and messages](03-prompts-and-messages.md) · [Concept map](../video-to-project-map.md).

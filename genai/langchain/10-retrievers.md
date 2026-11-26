@@ -33,3 +33,37 @@ Create 30 synthetic customer questions against 10 policy documents; label the ac
 ## Decision
 
 **Lab after loaders/splitters/stores**, not a prerequisite to normal checkout handling.
+
+## Visual — retrieval is a ranked search, not final truth
+
+```mermaid
+flowchart TD
+  A["Customer policy question"] --> B["Server-derived workspace + active docs"]
+  B --> C["Hybrid / semantic candidate search"]
+  C --> D["Version, approval, source filters"]
+  D --> E["Rank and deduplicate top-k"]
+  E --> F{"Enough reliable evidence?"}
+  F -->|"Yes"| G["Return chunks + citations to generator"]
+  F -->|"No"| H["Abstain or ask for clarification"]
+```
+
+### Quality vs safety are different axes
+
+| Metric / check | Answers the question |
+|---|---|
+| Recall@k | Was the necessary source among returned candidates? |
+| Precision@k | How many retrieved chunks are relevant? |
+| Citation correctness | Does the cited text actually support the answer? |
+| Tenant isolation | Was *any* wrong workspace material returned? |
+| Document revocation | Are removed/older versions absent? |
+| Latency / cost | Can this operate within the target user experience? |
+
+**Top-k does not mean k correct answers.** Similarity score can be high for irrelevant or obsolete passages. Search the right allowed corpus *before* ranking; then validate source and version.
+
+**Controlled fallback:** On no evidence, answer “I don't have a verified policy for that yet” or route to a merchant; do not fill the gap from model imagination.
+
+**Negative case:** Force a search timeout or zero hits. The model must not silently claim a specific return window.
+
+**Checkpoint:** Does a retriever write the final DM response? Usually **no**. It supplies documents; generation/formatting comes later, behind policy checks.
+
+**Read next:** [RAG](11-rag.md) · [RAG visual](../visual-atlas.md#5-rag-has-two-separate-pipelines).

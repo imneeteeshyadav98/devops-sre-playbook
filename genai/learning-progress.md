@@ -38,3 +38,18 @@ Decision: keep in lab | propose promotion | abandon
 ```
 
 **Do not claim a test passed without its output.**
+
+## Visual roadmap — the next lesson is not already done
+
+```mermaid
+flowchart LR
+  A["LangChain concepts discussed"] --> B["RAG concepts discussed"]
+  B --> C["Agentic AI Video 2: quiz passed"]
+  C --> D["Next: LangChain vs LangGraph"]
+  D -.->|"After understanding"| E["Optional isolated lab"]
+  E -.->|"Only with approval"| F["Product evaluation"]
+```
+
+**Tracking rule:** This file records **learning knowledge**, not certification, video-platform watch history, code completion or production acceptance. Use “discussed” unless completion and execution evidence were recorded. For each new video, add a link to the corresponding lesson, the quiz answer, a one-sentence Chatout mapping and, separately, proof of any lab.
+
+**Visual map:** [Visual atlas](visual-atlas.md) · [Course-to-project matrix](video-to-project-map.md).

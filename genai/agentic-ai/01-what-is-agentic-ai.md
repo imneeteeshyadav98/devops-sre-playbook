@@ -49,3 +49,37 @@ Build a tiny fake graph with states `NEED_PRODUCT → VERIFY_PRODUCT → READY_F
 **Learn and prototype stateful orchestration in an isolated lab only.** Do not replace current Chatout AI-service merely because LangGraph can model a state machine. Require measured improvement against the real regression suite and explicit approval before integration.
 
 **Interview answer:** "An agent uses tools and maintains state to pursue a goal, but in production its autonomy must be scoped by deterministic authorization, typed contracts, timeouts, idempotency, human handoff and observability."
+
+## Visual — bounded agentic behaviour, not unrestricted autonomy
+
+```mermaid
+flowchart TD
+  A["Goal + trusted state"] --> B["Propose next step"]
+  B --> C{"Permitted by tool policy?"}
+  C -->|"No"| D["Reject action; clarify or hand off"]
+  C -->|"Yes"| E["Call approved read-only tool"]
+  E --> F["Observe result and update state"]
+  F --> G{"Enough evidence or step limit reached?"}
+  G -->|"Continue safely"| B
+  G -->|"Stop"| H["Return recommendation to backend"]
+  H --> I["Backend verification + action authorization"]
+```
+
+### How to distinguish the patterns
+
+| Mechanism | How next step is chosen | What can go wrong |
+|---|---|---|
+| Single model call | One prompt, one response | Missing context, false confidence |
+| Fixed chain | Developer-defined order | Bad branch design, stale state |
+| Stateful graph | Explicit transitions over stored state | Incorrect state invariants |
+| Bounded agent | Chooses approved tools within limits | Loops, cost, tool misuse |
+
+**Chatout exercise:** Simulate turn-4 checkout with a fake read-only selection lookup tool. Cap at **3 steps**, prohibit direct checkout URL generation and verify that mixed human-request signals survive. If selection cannot be recovered from trusted state, clarify.
+
+**Trade-off:** Agentic does **not** imply superior reliability. Evaluate against a simple fixed workflow and measure error rate, latency, cost and unauthorized effects before proposing adoption.
+
+**Checkpoint:** If the model proposes an unapproved send tool, the **tool gateway must reject it**. Language models do not grant permissions.
+
+**Learning status:** Agentic AI Video 2 quiz B (1/1); lab not complete; LangChain vs LangGraph remains next lesson.
+
+**Read next:** [Course map](../video-to-project-map.md) · [Visual atlas](../visual-atlas.md).

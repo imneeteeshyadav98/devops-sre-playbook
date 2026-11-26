@@ -1,54 +1,80 @@
-# Generative AI learning notes — applied to Chatout
+# Generative AI × Chatout — visual learning handbook
 
-> **Learning repository, not production code.** Notes reflect what I studied and discussed through **26 Nov 2026**. Examples are simplified; they do **not** prove a capability is implemented or deployed in Chatout.
+**Learn the idea → see the diagram → apply to a real sales-agent failure → design a safe experiment.**
 
-## Why these notes exist
+> **Truth in labeling:** This is a study notebook based on our CampusX LangChain/RAG and Agentic AI discussions through **26 Nov 2026**. **Studied concepts are not deployed features.** All new AI work is proposed for an isolated lab unless approved through the Chatout product workflow.
 
-I am learning Generative AI, LangChain, RAG and Agentic AI with the goal of designing a **reliable Instagram-to-commerce assistant (Chatout)**. A merchant may sell through Shopify first, then WooCommerce or a custom store. The most important principle: **LLM suggests intent and language; authoritative systems own product facts, inventory, checkout and sends.**
+## Start here: five-minute visual overview
 
-Each lesson follows: **Concept → Chatout mapping → real failure/use case → isolated experiment → acceptance checks → implementation decision**. Notes are Hinglish-friendly but preserve the standard engineering terminology used in interviews.
+```mermaid
+flowchart LR
+  DM["Instagram DM"] --> AI["LLM: intent proposal"]
+  AI --> Guard["Schema + state + authorization"]
+  Guard --> Route{"Backend route"}
+  Route -->|"Sales"| Shopify["Live Shopify verification"]
+  Route -->|"Policies"| RAG["Optional tenant-scoped RAG"]
+  Route -->|"Human"| Human["Handoff / merchant alert"]
+  Shopify --> Reply["Safe verified reply"]
+  RAG --> Reply
+  Human --> Reply
+```
 
-## Learning index
+**Remember:** LLM understands *what the customer may mean*; backend determines *what is allowed and true*. A fluent answer is not proof of inventory, payment or checkout success.
 
-| Track | Lesson | Status |
+## Choose your reading path
+
+| You have... | Start with | Then |
 |---|---|---|
-| LangChain | [01 Introduction / LLMs](langchain/01-introduction-llms.md) | Discussed |
-| LangChain | [02 Components and models](langchain/02-components-and-models.md) | Discussed |
-| LangChain | [03 Prompts and messages](langchain/03-prompts-and-messages.md) | Discussed |
-| LangChain | [04 Structured outputs](langchain/04-structured-outputs.md) | Discussed |
-| LangChain | [05 Output parsers](langchain/05-output-parsers.md) | Discussed |
-| LangChain | [06 Runnables and chains](langchain/06-runnables-and-chains.md) | Discussed |
-| LangChain | [07 Document loaders](langchain/07-document-loaders.md) | Discussed |
-| LangChain | [08 Text splitters](langchain/08-text-splitters.md) | Discussed |
-| LangChain | [09 Embeddings and vector stores](langchain/09-embeddings-and-vector-stores.md) | Discussed |
-| LangChain | [10 Retrievers](langchain/10-retrievers.md) | Discussed |
-| LangChain | [11 RAG and fine-tuning distinction](langchain/11-rag.md) | Discussed |
-| Agentic AI | [01 What is Agentic AI?](agentic-ai/01-what-is-agentic-ai.md) | Video 2 knowledge check passed; lab pending |
+| **5 minutes** | [Visual atlas](visual-atlas.md) | [Why each class matters](video-to-project-map.md) |
+| **30 minutes** | [Models](langchain/02-components-and-models.md) → [Prompts](langchain/03-prompts-and-messages.md) → [Schema](langchain/04-structured-outputs.md) | [Checkout regression](chatout/failure-cases.md) |
+| **A study session** | Follow LangChain lessons 01–11 below | Try [lab thought experiments](chatout/lab-experiments.md) |
+| **An architecture review** | [Trust boundaries](chatout/architecture-and-safety.md) | [Multi-turn + RAG diagrams](visual-atlas.md) |
+| **Interview prep** | [Q&A](chatout/interview-preparation.md) | Explain diagrams in your own words |
 
-**Next planned lesson:** LangChain vs LangGraph. This is **not marked completed**. LangGraph introductory concepts were discussed, not deployed.
+## Course notes — lessons already discussed
 
-## Apply it to the product
+| Track | Lesson | Practical outcome | Learning evidence |
+|---|---|---|---|
+| LangChain | [01 · LLM introduction](langchain/01-introduction-llms.md) | Understand language vs facts | Discussed |
+| LangChain | [02 · Components and models](langchain/02-components-and-models.md) | Separate chat and embedding roles | Discussed |
+| LangChain | [03 · Prompts and messages](langchain/03-prompts-and-messages.md) | Recover conversational context safely | Discussed |
+| LangChain | [04 · Structured outputs](langchain/04-structured-outputs.md) | Typed intent proposals | Discussed |
+| LangChain | [05 · Output parsers](langchain/05-output-parsers.md) | Reject malformed proposals | Discussed |
+| LangChain | [06 · Runnables and chains](langchain/06-runnables-and-chains.md) | Sequence / parallel / branch | Discussed |
+| LangChain | [07 · Document loaders](langchain/07-document-loaders.md) | Trace source and metadata | Discussed |
+| LangChain | [08 · Text splitters](langchain/08-text-splitters.md) | Keep policy clauses together | Discussed |
+| LangChain | [09 · Embeddings / vector stores](langchain/09-embeddings-and-vector-stores.md) | Semantic retrieval foundations | Discussed |
+| LangChain | [10 · Retrievers](langchain/10-retrievers.md) | Search approved current evidence | Discussed |
+| LangChain | [11 · RAG](langchain/11-rag.md) | Ground FAQ answers; no fine-tuning needed | Discussed; RAG quiz B |
+| Agentic AI | [What is Agentic AI?](agentic-ai/01-what-is-agentic-ai.md) | Bounded, stateful tool choices | Video 2 quiz B, 1/1; lab pending |
 
-- [Chatout architecture and safety boundaries](chatout/architecture-and-safety.md)
-- [Real failure cases mapped to GenAI topics](chatout/failure-cases.md)
-- [Isolated GenAI lab experiments and test matrix](chatout/lab-experiments.md)
-- [GenAI/SRE interview preparation](chatout/interview-preparation.md)
-- [Learning progress / quiz evidence](learning-progress.md)
+**Next lesson:** LangChain vs LangGraph. It is **not yet completed**; only high-level previews appear in the documents. Class numbers in this repo are a **topic-learning sequence**, not a precise official video-index claim.
 
-## Hard engineering rules
+## Deep dives
 
-1. **No GenAI learning code directly into production AI-service.** Start in a separate lab/microservice workspace; promotion requires explicit approval.
-2. Never let RAG or LLM memory decide **live product price, stock, delivery promise, order state or checkout success**. Verify through a trusted commerce API/backend.
-3. Any tool/action must respect **workspace identity, authorization, idempotency, validation, audit and outbound-send approval**.
-4. Redact customer PII and secrets in learning examples. Use synthetic merchant documents for retrieval experiments.
-5. Do not count a lecture as a completed engineering feature. **Learned ≠ implemented ≠ tested ≠ merged ≠ runtime accepted**.
-6. Chatout master Excel tracker remains the product source of truth; this learning repo is not a second product backlog.
+- **[Visual atlas](visual-atlas.md):** nine GitHub-rendered flow / sequence diagrams for the complete journey.
+- **[Quick revision sheet](quick-revision.md):** all 12 concepts on one page, with a five-minute self-check.
+- **[Video-to-project map](video-to-project-map.md):** one matrix connecting each class to concrete Chatout decisions.
+- **[Architecture and safety](chatout/architecture-and-safety.md):** model vs backend vs retrieval authority.
+- **[Actual failure cases](chatout/failure-cases.md):** turn-4 checkout continuity and checkout + human takeover.
+- **[Lab evaluation plan](chatout/lab-experiments.md):** focused synthetic fixtures and hard acceptance checks.
+- **[Interview answers](chatout/interview-preparation.md):** explain decisions, not just vocabulary.
+- **[Learning progress](learning-progress.md):** distinguish theory, labs, merge and runtime acceptance.
 
-## Reusable class note checklist
+## Five safety rules worth memorizing
 
-- Explain the concept in simple English/Hinglish.
-- Draw where it would sit in Chatout.
-- Link one actual regression or business use case.
-- Define a safe toy experiment with mock data.
-- Add positive, negative, cross-workspace and security cases.
-- State **use now / prototype later / not needed** and why.
+1. **Model output is a proposal**, not an authorization to call a transaction API.
+2. **Tenant identity comes from the backend**, never from user prompts or retrieved document text.
+3. **Shopify or the trusted commerce backend owns** current price, stock, checkout and order claims.
+4. **RAG is evidence retrieval**, not an inventory, checkout, or permission engine.
+5. **Learning lab ≠ product implementation**. Master Excel tracker remains the only product source of truth; no auto-promotion to the running AI-service.
+
+## How to use these notes actively
+
+After each class, write a three-sentence recap, trace one diagram aloud, answer the **checkpoint**, then write one negative test that would catch a real Chatout regression. Record lab results only after running them. Avoid adding unsafely detailed customer messages, credentials, live tokens, internal endpoint addresses or merchant PII to this public repo.
+
+**Legend for diagrams:** solid arrows = flow/dependency; dotted arrows = optional conceptual linkage; decision diamonds = explicit policy/validation choices. Diagrams are intentionally simplified, **not production topology snapshots**.
+
+---
+
+**Source:** Our class-by-class CampusX learning discussions. Wording, diagrams and code examples are independently authored educational explanations, not copied video transcripts.

@@ -32,3 +32,29 @@ Prepare 20 synthetic customer messages: greeting, price, quantity, follow-up che
 ## Decision
 
 **Use now as a design principle.** LLM for interpretation, deterministic services for facts and effects. **Interview answer:** *"LLMs generate likely text; production agent reliability comes from grounding, state, validation, tool permissions and observability."*
+
+## Visual memory aid — prediction is not verification
+
+```mermaid
+flowchart LR
+  A["Customer words"] --> B["LLM infers likely meaning"]
+  B --> C["Intent proposal: product and quantity"]
+  C --> D["Backend checks trusted state"]
+  D --> E{"Commerce facts verified?"}
+  E -->|"Yes"| F["Approved answer / next step"]
+  E -->|"No"| G["Clarify or hand off; no invented claims"]
+```
+
+### Explain it to a new engineer
+
+The model can understand *“wahi product 2 pieces”* without a perfect grammar match, but it does not know **which product was reliably selected** unless trusted state says so. Its output can be plausible and still wrong. Think of the model as a **language interpreter**, not an order database.
+
+**Wrong design:** “LLM generated a checkout URL, therefore send it.”
+
+**Safer design:** “LLM proposed checkout intent → backend resolves product selection → commerce API verifies prerequisites → outbound policy permits a result.”
+
+**Try mentally:** If the user asks “do you have stock?” and the model has only yesterday's FAQ document, which component can truthfully answer? **The authorized commerce lookup**, not a semantic document match.
+
+**Checkpoint:** What breaks if the model is 99% confident but the product ID belongs to another merchant? The backend must deny it; confidence does not grant access.
+
+**Read next:** [Components and models](02-components-and-models.md) · [Visual atlas](../visual-atlas.md).

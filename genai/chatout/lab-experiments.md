@@ -69,3 +69,48 @@ Failures and next action:
 ## Promotion gate
 
 Only propose integration after documented reproducible tests, independent safety review, explicit user approval and comparison against the existing solution. No auto-deploy, no live Instagram sending, no production merchant data in the learning lab.
+
+## Visual: test-first lab delivery loop
+
+```mermaid
+flowchart TD
+  A["One class concept"] --> B["Write falsifiable hypothesis"]
+  B --> C["Synthetic fixtures + baseline"]
+  C --> D["Small isolated implementation"]
+  D --> E["Positive + negative + tenant tests"]
+  E --> F{"All critical invariants pass?"}
+  F -->|"No"| G["Document failure and improve"]
+  G --> D
+  F -->|"Yes"| H["Record metrics + commit + evidence"]
+  H --> I{"Approved for product evaluation?"}
+  I -->|"No"| J["Remain in lab"]
+  I -->|"Yes"| K["Propose separately through product workflow"]
+```
+
+### Minimum reproducible experiment report
+
+| Field | Example (format, not achieved result) |
+|---|---|
+| Hypothesis | A structured intent proposal preserves human_requested in mixed messages |
+| Input fixture | 20 synthetic DMs with labelled checkout/handoff signals |
+| Baseline | Single-label classifier using last turn only |
+| Candidate | Context-aware multi-signal proposal + backend policy |
+| Negative checks | Missing product, foreign tenant ID, bad JSON, timeout, injected text |
+| Metrics | Intent recall, mixed-signal recall, false checkout claims, side-effect count |
+| Pass threshold | Zero unauthorized effects and cross-tenant leakage; success target explicitly declared before run |
+| Evidence | Versioned fixtures, test command, logs, timestamps, commit SHA |
+| Promotion decision | Lab only until explicit approval, review, and staged acceptance |
+
+### Example assertions — not executed here
+
+```python
+# Illustrative pseudocode: mock services only, no real Shopify or Instagram.
+assert classify(turn4_with_trusted_selection).checkout_requested is True
+assert policy(mixed_human_checkout).handoff_requested is True
+assert policy(foreign_workspace_product).allow_checkout is False
+assert mock_checkout.calls == 0  # for an unverified or denied request
+```
+
+**What not to over-claim:** A green local unit test is not equivalent to staging acceptance or safe production sending. Lab results must be explicitly dated, reproducible, and isolated from the deployed AI-service.
+
+**Visual reference:** [Course-to-project map](../video-to-project-map.md).

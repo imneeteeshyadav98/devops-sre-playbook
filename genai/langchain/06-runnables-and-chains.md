@@ -39,3 +39,45 @@ Implement fake runnables or plain Python functions for normalization, classifica
 ## Decision
 
 **Use simple deterministic chains for stable tasks**, test conditional routing carefully; delay introducing complex agent orchestration until lab evidence demonstrates value.
+
+## Visual A — three orchestration patterns
+
+```mermaid
+flowchart LR
+  subgraph Sequential["Sequential: dependent steps"]
+    A["Normalize"] --> B["Propose intent"] --> C["Validate"] --> D["Route"]
+  end
+  subgraph Parallel["Parallel: independent analysis"]
+    E["Customer DM"] --> F["Topic proposal"]
+    E --> G["Human-request detector"]
+    F --> H["Merge both signals"]
+    G --> H
+  end
+  subgraph Conditional["Conditional: validated routing"]
+    I{"Backend route"} -->|"FAQ"| J["Scoped retrieval"]
+    I -->|"Checkout"| K["Verify commerce state"]
+    I -->|"Human"| L["Handoff"]
+  end
+```
+
+**Runnable** is a composable interface (for example invoke/batch); **chain** is a composition of runnable steps. This is a programming model, not automatic reliability. A lab may use plain functions before adopting a framework.
+
+## Visual B — business actions must be ordered
+
+```mermaid
+flowchart TD
+  A["Checkout proposed"] --> B["Resolve authenticated workspace"]
+  B --> C["Recover verified product and quantity"]
+  C --> D["Fresh API check"]
+  D --> E{"Eligible + intent + approval?"}
+  E -->|"Yes"| F["Idempotent checkout handling"]
+  E -->|"No"| G["Clarify or handoff"]
+```
+
+**Do not parallelize** inventory verification with an action that presumes verification succeeded. Independent intent signals can run in parallel; transactionally dependent actions cannot.
+
+**Anti-pattern:** Conditional router chooses checkout and drops independent human_requested=true. Preserve both before routing.
+
+**Checkpoint:** Does the LCEL pipe operator automatically add memory, tenant isolation or idempotency? **No.** Engineer those separately.
+
+**Read next:** [Document loaders](07-document-loaders.md) · [Chain vs agent diagram](../visual-atlas.md#7-chain-vs-bounded-agent-loop).
