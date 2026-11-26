@@ -4,6 +4,8 @@
   <b>Public DevOps/SRE notes, Kubernetes upgrade learnings, incident reviews, Kubepreflight ideas, and Platform Engineering interview prep.</b>
 </p>
 
+**New learning track:** [Generative AI, LangChain, RAG and Agentic AI — applied to Chatout](genai/README.md).
+
 <p align="center">
   <img src="https://img.shields.io/badge/Focus-Kubernetes%20Upgrade%20Readiness-blue" />
   <img src="https://img.shields.io/badge/AWS-EKS-orange" />
