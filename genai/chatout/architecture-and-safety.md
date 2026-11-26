@@ -55,3 +55,63 @@ flowchart TD
 ## Release discipline
 
 Learning result → isolated test proof → independent review → integration proposal → explicit approval → focused regression tests → batched staging release → runtime acceptance. **Do not mark Done before the required evidence.** Existing Chatout master Excel remains the only product tracker.
+
+## Visual: trust is enforced by the backend, not the LLM
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant IG as Instagram DM
+  participant BE as Authenticated backend
+  participant AI as AI proposal
+  participant DB as Trusted conversation state
+  participant CM as Commerce adapter
+  participant GW as Outbound gate
+  IG->>BE: Customer message
+  BE->>DB: Read workspace and verified state
+  DB-->>BE: Trusted state summary
+  BE->>AI: Intent proposal request
+  AI-->>BE: Proposed intent / fields
+  BE->>BE: Validate schema + intent + tenant + policy
+  alt Commerce action
+    BE->>CM: Authorized fresh product/checkout lookup
+    CM-->>BE: Verified result or failure
+  else Human request
+    BE->>BE: Preserve handoff + merchant alert
+  else Merchant FAQ
+    BE->>BE: Optional scoped knowledge retrieval
+  end
+  BE->>GW: Approved response with idempotency key
+  GW-->>IG: Send only if outbound authorization passes
+```
+
+### Three invariants an architecture review should enforce
+
+1. **A model-generated product identifier is never trusted without backend state and scope checks.** A plausible product string cannot cross the authorization boundary by itself.
+2. **Intent classification, policy evaluation and side-effect execution must be separate steps.** The system can interpret “checkout” without being authorized or technically ready to create a link.
+3. **A mixed human request is independently preserved.** If the message asks for a link *or* a seller, checkout inference must not silently erase the human signal.
+
+## Visual: status progression needs evidence
+
+```mermaid
+flowchart LR
+  A["Studied concept"] --> B["Synthetic lab prototype"]
+  B --> C["Focused automated tests"]
+  C --> D["Independent review"]
+  D --> E["Approved product implementation"]
+  E --> F["Merged + staged release"]
+  F --> G["Staging runtime acceptance"]
+  G --> H["Launch gated separately"]
+```
+
+The GenAI learning notes record concepts and proposed experiments; they are **not proof** any stage beyond learning has been completed. Real Instagram sending remains subject to the project's live-send and Meta permissions gates.
+
+### Review prompts for the engineering team
+
+- What is the trusted source of **workspace ID**, and can a model override it?
+- Which component owns **current stock/price**, and how is a stale result handled?
+- Where is the **idempotency boundary** around possible duplicate checkout or message sends?
+- What metric distinguishes **misclassification** from **parser rejection** and **authorization denial**?
+- When a user says “talk to a human”, is the merchant alert traceable from logs to runtime outcome?
+
+**See the complete visual story:** [Visual atlas](../visual-atlas.md).
