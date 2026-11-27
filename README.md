@@ -6,6 +6,8 @@
 
 **New learning track:** [Generative AI, LangChain, RAG and Agentic AI — applied to Chatout](genai/README.md).
 
+**Agentic AI / LangGraph (Videos 1–2):** [Chatout-specific visual study guide](genai/langgraph/README.md).
+
 <p align="center">
   <img src="https://img.shields.io/badge/Focus-Kubernetes%20Upgrade%20Readiness-blue" />
   <img src="https://img.shields.io/badge/AWS-EKS-orange" />

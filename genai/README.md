@@ -48,7 +48,19 @@ flowchart LR
 | LangChain | [11 · RAG](langchain/11-rag.md) | Ground FAQ answers; no fine-tuning needed | Discussed; RAG quiz B |
 | Agentic AI | [What is Agentic AI?](agentic-ai/01-what-is-agentic-ai.md) | Bounded, stateful tool choices | Video 2 quiz B, 1/1; lab pending |
 
-**Next lesson:** LangChain vs LangGraph. It is **not yet completed**; only high-level previews appear in the documents. Class numbers in this repo are a **topic-learning sequence**, not a precise official video-index claim.
+**Next lesson:** LangChain vs LangGraph (Video 3). It is **not yet completed**; only high-level previews appear in the documents. Class numbers in this repo are a **topic-learning sequence**, not a precise official video-index claim.
+
+## Agentic AI / LangGraph — Videos 1 and 2 completed
+
+**[Open the dedicated LangGraph study folder](langgraph/README.md)** for the instructor's recruiter example translated to Chatout, annotated flowcharts, real checkout/handoff regressions, a synthetic lab and interview notes.
+
+| Lecture | New Chatout-focused study note | Status |
+|---|---|---|
+| Video 1: Generative AI vs Agentic AI | [Four stages: LLM → RAG → tools → bounded agent](langgraph/01-generative-ai-vs-agentic-ai.md) | Completed (user report) |
+| Video 2: What is Agentic AI? | [Brain, tools, state, planning, feedback](langgraph/02-what-is-agentic-ai.md) | Completed; prior quiz 1/1 |
+| Video 3: LangChain vs LangGraph | Not added as completed | Next; pending |
+
+**Design exercise:** [Chatout case study](langgraph/03-chatout-case-study.md) · [Lab blueprint](langgraph/04-isolated-lab-blueprint.md) · [Revision notes](langgraph/05-interview-and-revision.md).
 
 ## Deep dives
 

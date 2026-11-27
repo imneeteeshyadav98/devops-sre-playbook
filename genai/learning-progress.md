@@ -39,6 +39,16 @@ Decision: keep in lab | propose promotion | abandon
 
 **Do not claim a test passed without its output.**
 
+## LangGraph playlist learning update — 27 Nov 2026
+
+| Playlist lecture | Recorded knowledge status | Engineering status |
+|---|---|---|
+| Video 1 — Generative AI vs Agentic AI | Completed by user report | [Notes with recruiter-to-Chatout mapping](langgraph/01-generative-ai-vs-agentic-ai.md); no lab executed |
+| Video 2 — What is Agentic AI? | Completed; earlier quiz B correct, 1/1 | [Notes and bounded-tool examples](langgraph/02-what-is-agentic-ai.md); no lab executed |
+| Video 3 — LangChain vs LangGraph | **Not yet confirmed complete** | Next lecture, no implementation claim |
+
+[LangGraph track index](langgraph/README.md) provides a complete visual roadmap and references to the instructor's examples. The separate `agentic-ai/` lesson is retained for backward compatibility.
+
 ## Visual roadmap — the next lesson is not already done
 
 ```mermaid
